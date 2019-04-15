@@ -1,31 +1,6 @@
 version: '3.4'
 
 services:
-    nginx-ixui:
-        image: nginx:latest
-        container_name: nginx-ixui
-        ports:
-            - "80:80"
-        networks:
-            - web
-        volumes:
-            - ${BASE_PATH}:/var/www/html
-            - ./nginx/conf:/etc/nginx/conf.d
-            - ./nginx/logs:/var/log/nginx/
-        depends_on:
-            - php-ixui
-
-    php-ixui:
-        build: ./php
-        container_name: php-ixui
-        networks:
-            - backend
-            - web
-        volumes:
-            - ${BASE_PATH}:/var/www/html
-        depends_on:
-            - database-ixui
-
     database-ixui:
         image: mysql
         container_name: database-ixui
@@ -33,8 +8,6 @@ services:
             - 3306
         ports:
             - "3306:3306"
-        networks:
-            - backend
         volumes:
             - ./mysql/data:/var/lib/mysql
         environment:
@@ -42,7 +15,3 @@ services:
             - MYSQL_USER=ixui
             - MYSQL_PASSWORD=secret
             - MYSQL_DATABASE=ixui
-
-networks:
-    backend:
-    web:
